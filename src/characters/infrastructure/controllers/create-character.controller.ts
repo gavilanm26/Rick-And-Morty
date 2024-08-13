@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateCharacterDto } from '../../application/dto/CreateCharacter.dto';
 import { Character } from '../../domain/entities/character.entity';
 import { CreateCharacterUseCaseService } from '../../application/use-cases/create-character.use-case.service';
 import { FindAllCharacterUseCaseService } from '../../application/use-cases/find-all-character.use-case.service';
 import { FindOneCharacterUseCaseService } from '../../application/use-cases/find-one-character.use-case.service';
 import { UpdateCharacterUseCaseService } from '../../application/use-cases/update-character.use-case.service';
+import { DeleteCharacterUseCaseService } from '../../application/use-cases/delete-character.use-case.service';
 import { UpdateCharacterDto } from '../../application/dto/UpdateCharacterDto';
 import { isValidObjectId } from 'mongoose';
 
@@ -15,6 +25,7 @@ export class CreateCharacterController {
     private readonly findAllCharacterUseCaseService: FindAllCharacterUseCaseService,
     private readonly findOneCharacterUseCaseService: FindOneCharacterUseCaseService,
     private readonly updateCharacterUseCaseService: UpdateCharacterUseCaseService,
+    private readonly deleteCharacterUseCaseService: DeleteCharacterUseCaseService,
   ) {}
 
   @Post()
@@ -46,5 +57,18 @@ export class CreateCharacterController {
     return this.updateCharacterUseCaseService.update(id, updateCharacterDto);
     //await this.createCharacterUseCase.execute(updateCharacterDto);
     //return { message: 'Character updated successfully' };
+  }
+
+  @Delete(':id')
+  async delete(
+    @Param('id') id: string,
+  ): Promise<{ deleted: boolean; message?: string }> {
+    const result = await this.deleteCharacterUseCaseService.execute(id);
+
+    if (!result.deleted) {
+      throw new BadRequestException(result.message);
+    }
+
+    return result;
   }
 }

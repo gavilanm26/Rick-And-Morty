@@ -134,5 +134,29 @@ export class CharacterService {
       });
   }
 
+  deleteById(id: string): Promise<{ deleted: boolean; message?: string }> {
+    this.logger.log(`(DELETE) Deleting character with id: ${id}`);
+
+    return this.characterRepository
+      .deleteById(id)
+      .then((result) => {
+        if (result) {
+          this.logger.log(
+            `(DELETE) Character with id ${id} deleted successfully.`,
+          );
+          return { deleted: true };
+        } else {
+          this.logger.warn(`(DELETE) Character with id ${id} not found.`);
+          return { deleted: false, message: 'Character not found' };
+        }
+      })
+      .catch((error) => {
+        this.logger.error(
+          `(DELETE) Error deleting character with id ${id}`,
+          error.stack,
+        );
+        throw error;
+      });
+  }
   // Otros métodos de negocio relacionados, como update, delete, find, etc.
 }

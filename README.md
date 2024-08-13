@@ -64,6 +64,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Flujo de Creación de Personajes
+
+Este proyecto sigue una arquitectura hexagonal
+
+1. El Cliente hace una solicitud HTTP POST a `/characters` con los datos del personaje en el cuerpo de la solicitud.
+2. El Controlador recibe la solicitud y pasa los datos al caso de uso `CreateCharacterUseCaseService`.
+3. El Caso de Uso convierte los datos del DTO en una entidad `Character` y se comunica con el servicio de dominio para manejar la lógica de negocio.
+4. El Servicio de Dominio utiliza el repositorio para guardar el personaje en la base de datos.
+5. El Repositorio implementa la lógica de persistencia utilizando Mongoose, y guarda el personaje en MongoDB.
+6. El Controlador retorna la respuesta al cliente confirmando que el personaje ha sido creado exitosamente.
+
 ## License
 
 Nest is [MIT licensed](LICENSE).

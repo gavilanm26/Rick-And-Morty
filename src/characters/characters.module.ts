@@ -11,6 +11,7 @@ import { CharacterRepository } from './infrastructure/repositories/character.rep
 import { FindAllCharacterUseCaseService } from './application/use-cases/find-all-character.use-case.service';
 import { FindOneCharacterUseCaseService } from './application/use-cases/find-one-character.use-case.service';
 import { UpdateCharacterUseCaseService } from './application/use-cases/update-character.use-case.service';
+import { DeleteCharacterUseCaseService } from './application/use-cases/delete-character.use-case.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UpdateCharacterUseCaseService } from './application/use-cases/update-ch
     FindAllCharacterUseCaseService,
     FindOneCharacterUseCaseService,
     UpdateCharacterUseCaseService,
+    DeleteCharacterUseCaseService,
   ],
   exports: [CharacterService],
 })

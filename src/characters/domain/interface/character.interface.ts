@@ -7,5 +7,5 @@ export interface CharacterInterface {
     query: Partial<{ name: string; _id: string }>,
   ): Promise<Character | null>;
   update(character: Character): Promise<Character | null>;
-  // Otros métodos según lo necesario, como findById, update, delete, etc.
+  deleteById(id: string): Promise<boolean>;
 }

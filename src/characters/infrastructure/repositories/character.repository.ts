@@ -101,5 +101,30 @@ export class CharacterRepository implements CharacterInterface {
         throw error;
       });
   }
-  // Otros métodos según lo necesario, como findById, update, delete, etc.
+
+  async deleteById(id: string): Promise<boolean> {
+    this.logger.log(`(DELETE) Deleting character with id: ${id}`);
+
+    return this.characterModel
+      .deleteOne({ _id: id })
+      .exec()
+      .then((result: { deletedCount?: number }) => {
+        if (result.deletedCount && result.deletedCount > 0) {
+          this.logger.log(
+            `(DELETE) Character with id ${id} deleted successfully.`,
+          );
+          return true;
+        } else {
+          this.logger.warn(`(DELETE) Character with id ${id} not found.`);
+          return false;
+        }
+      })
+      .catch((error) => {
+        this.logger.error(
+          `(DELETE) Failed to delete character with id ${id}`,
+          error.stack,
+        );
+        throw error;
+      });
+  }
 }
